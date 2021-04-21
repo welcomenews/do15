@@ -18,7 +18,7 @@ pipeline {
         
         stage('Install requirements') {
             steps {
-                sh 'bash -l -c "cd /var/lib/jenkins/workspace/phpProj && echo "yes" |composer update"'
+                sh 'bash -l -c "cd /var/lib/jenkins/workspace/phpProj && echo \"yes\" |composer update"'
             }
         }
                        
