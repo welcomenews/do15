@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Git clone') {
            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']],
                 userRemoteConfigs: [[url: 'https://github.com/symfony/demo.git']]])
            }    
         }    
