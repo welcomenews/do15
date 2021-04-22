@@ -22,17 +22,10 @@ pipeline {
                 sh "sudo mkdir -p /var/www/html/releases/${version}"
                 sh "sudo cp -rf ${workspace}/* /var/www/html/releases/${version}"
                 sh "sudo chown -R www-data:www-data /var/www/html/releases/${version}/*"
-                sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink || true"
+                sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink"
            }
         }
         
-        stage('Rewrate index-simlink') {
-            when { expression { return fileExists ('/var/www/html/index-simlink') } }
-            steps {
-                sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink"
-                sh 'sudo systemctl reload nginx.service'
-            }  
-        }
         stage('Remove old versions\'s folders') {
            steps {
                 sh 'cd /var/www/html/releases/'
