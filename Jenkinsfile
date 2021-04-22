@@ -13,13 +13,13 @@ pipeline {
         
         stage('Install requirements') {
             steps {
-                sh 'bash -l -c "cd ${workspace}/phpProj && echo \"yes\" |composer update"'
+                sh 'bash -l -c "cd \"${workspace}\"/phpProj && echo \"yes\" |composer update"'
             }
         }
                        
         stage('Copy static site') {
             steps {
-                sh "sudo mkdir -p /var/www/html/releases/$version"
+                sh "sudo mkdir -p /var/www/html/releases/${version}"
                 sh "sudo cp -rf ${workspace}/phpProj/ /var/www/html/releases/${version}"
                 sh "sudo chown -R www-data:www-data /var/www/html/releases/${version}/*"
                 sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink || true"
