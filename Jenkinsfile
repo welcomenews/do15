@@ -13,7 +13,8 @@ pipeline {
         
         stage('Install requirements') {
             steps {
-                sh 'bash -l -c "cd \"${workspace}\"/phpProj && echo \"yes\" |composer update"'
+                //sh 'bash -l -c "cd ${workspace}/phpProj && echo \"yes\" |composer update"'
+                sh "cd ${workspace}/phpProj && echo \"yes\" |composer update"
             }
         }
                        
