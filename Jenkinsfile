@@ -21,7 +21,7 @@ pipeline {
         stage('Copy static site') {
             steps {
                 sh "sudo mkdir -p /var/www/html/releases/${version}"
-                sh "sudo cp -rf ${workspace}/ /var/www/html/releases/${version}"
+                sh "sudo cp -rf ${workspace}/* /var/www/html/releases/${version}"
                 sh "sudo chown -R www-data:www-data /var/www/html/releases/${version}/*"
                 sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink || true"
            }
