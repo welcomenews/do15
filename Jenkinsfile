@@ -1,8 +1,8 @@
 // Define variable
-def version = 'v0.15'
+def version = "${BUILD_NUMBER}"
 
 pipeline {
-    agent any //{ label 'agent2' }
+    agent any
     stages {
         stage('Git clone') {
            steps {
@@ -10,31 +10,26 @@ pipeline {
                 userRemoteConfigs: [[url: 'https://github.com/symfony/demo.git']]])
            }    
         }    
-    //    stage('Install nginx') {
-    //        steps {
-    //            sh 'sudo apt install nginx -y'    
-    //        }
-    //    }
         
         stage('Install requirements') {
             steps {
-                sh 'bash -l -c "cd /var/lib/jenkins/workspace/phpProj && echo \"yes\" |composer update"'
+                sh 'bash -l -c "cd ${workspace}/phpProj && echo \"yes\" |composer update"'
             }
         }
                        
         stage('Copy static site') {
             steps {
                 sh "sudo mkdir -p /var/www/html/releases/$version"
-                sh "sudo cp -rf /var/lib/jenkins/workspace/phpProj/public/ /var/www/html/releases/$version"
-                sh "sudo chown -R www-data:www-data /var/www/html/releases/$version/*"
-                sh "sudo ln -sfT /var/www/html/releases/$version/ /var/www/html/index-simlink || true"
+                sh "sudo cp -rf ${workspace}/phpProj/ /var/www/html/releases/${version}"
+                sh "sudo chown -R www-data:www-data /var/www/html/releases/${version}/*"
+                sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink || true"
            }
         }
         
         stage('Rewrate index-simlink') {
             when { expression { return fileExists ('/var/www/html/index-simlink') } }
             steps {
-                sh "sudo ln -sfT /var/www/html/releases/$version/ /var/www/html/index-simlink"
+                sh "sudo ln -sfT /var/www/html/releases/${version}/ /var/www/html/index-simlink"
                 sh 'sudo systemctl reload nginx.service'
             }  
         }
